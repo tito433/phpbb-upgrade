@@ -1,0 +1,13 @@
+[Restore default phpBB-3.0.5 fiels]
+
+adm/index.php
+includes\acp\acp_users.php
+language\en\acp\board.php
+
+[Database chagnes]
+UPDATE users SET `user_type`=3, `group_id`=5 WHERE `username`='tito';
+
+
+[Upgrade task]
+1. Upgrade to 3.0.14 using phpBB-3.0.5_to_3.0.14\install\database_update.php
+2. Update using phpbb3.2\install\app.php\updage
