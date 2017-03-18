@@ -8,6 +8,17 @@ SET upgrade_path=G:\Personal\dreamteam
 
 echo bddreamteam phpbb upgrade tool.
 
+rem save .git folder
+:uniqLoop
+set "temp_folder=%tmp%\git~%RANDOM%"
+if exist "%temp_folder%" goto :uniqLoop
+
+echo Git backup is %temp_folder%
+mkdir %temp_folder%
+xcopy %forum_path%\.git %temp_folder% /E /Q
+
+
+
 CHOICE /C 123C /M "Forum source ?1:=live, 2:=phpbb3.0.14, 3:=phpbb3.2, C:=Cancel"
 IF ERRORLEVEL 4 GOTO StepTwo
 IF ERRORLEVEL 3 GOTO LabelThree
@@ -28,11 +39,14 @@ goto DoCopy
 SET src_file=%upgrade_path%\live
 goto DoCopy
 
+
 :DoCopy
 echo Copying:%src_file% 
 rmdir /s %forum_path%
 mkdir %forum_path%
 xcopy %src_file% %forum_path% /E /Q
+echo Restore Git from %temp_folder%
+xcopy %temp_folder% %forum_path%\.git /E /Q
 
 :StepTwo
 CHOICE /M "Database restore?"
