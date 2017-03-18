@@ -2,21 +2,9 @@
 
 SET wamp_dir=C:\wamp
 SET forum_path=%wamp_dir%\www\dreamteam
-
 SET upgrade_path=G:\Personal\dreamteam
 
-
 echo bddreamteam phpbb upgrade tool.
-
-rem save .git folder
-:uniqLoop
-set "temp_folder=%tmp%\git~%RANDOM%"
-if exist "%temp_folder%" goto :uniqLoop
-
-echo Git backup is %temp_folder%
-mkdir %temp_folder%
-xcopy %forum_path%\.git %temp_folder% /E /Q
-
 
 
 CHOICE /C 123C /M "Forum source ?1:=live, 2:=phpbb3.0.14, 3:=phpbb3.2, C:=Cancel"
@@ -36,19 +24,20 @@ SET src_file=%upgrade_path%\phpbb3.0.14
 goto DoCopy
 
 :LabelOne
-SET src_file=%upgrade_path%\live
+SET src_file=%upgrade_path%\live_fixed
 goto DoCopy
 
 
 :DoCopy
 echo Cleaning "%forum_path%"
-pushd %forum_path%
-del /s /q .
-popd
+
+ATTRIB +H %forum_path%\.git
+FOR /D %%i IN (%forum_path%\*) DO rmdir /S /Q %%i
+ DEL /Q %forum_path%\*.*
+ATTRIB -H %forum_path%\.git
+
 echo Copying from %src_file%
 xcopy /S %src_file% %forum_path% /E /Q
-echo Restore Git %temp_folder%
-xcopy /S %temp_folder% %forum_path%\.git\ /E /Q
 
 :StepTwo
 CHOICE /M "Database restore?"
