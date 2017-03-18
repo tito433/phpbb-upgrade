@@ -1,6 +1,6 @@
 @ECHO OFF
 
-SET wamp_dir= C:\wamp
+SET wamp_dir=C:\wamp
 SET forum_path=%wamp_dir%\www\dreamteam
 
 SET upgrade_path=G:\Personal\dreamteam
@@ -41,12 +41,14 @@ goto DoCopy
 
 
 :DoCopy
-echo Copying:%src_file% 
-rmdir /s %forum_path%
-mkdir %forum_path%
-xcopy %src_file% %forum_path% /E /Q
-echo Restore Git from %temp_folder%
-xcopy %temp_folder% %forum_path%\.git /E /Q
+echo Cleaning "%forum_path%"
+pushd %forum_path%
+del /s /q .
+popd
+echo Copying from %src_file%
+xcopy /S %src_file% %forum_path% /E /Q
+echo Restore Git %temp_folder%
+xcopy /S C:\Users\rezaul\AppData\Local\Temp\git~30028 %forum_path%\.git\ /E /Q
 
 :StepTwo
 CHOICE /M "Database restore?"
