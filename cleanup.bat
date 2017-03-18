@@ -48,7 +48,7 @@ popd
 echo Copying from %src_file%
 xcopy /S %src_file% %forum_path% /E /Q
 echo Restore Git %temp_folder%
-xcopy /S C:\Users\rezaul\AppData\Local\Temp\git~30028 %forum_path%\.git\ /E /Q
+xcopy /S %temp_folder% %forum_path%\.git\ /E /Q
 
 :StepTwo
 CHOICE /M "Database restore?"
